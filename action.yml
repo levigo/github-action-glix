@@ -1,0 +1,22 @@
+name: 'GLIX Action – the Git Log Identifier eXtractor'
+description: 'This action extracts all Jira issue keys from a certain git commit and its relevant parents'
+branding:
+  icon: "cloud"
+  color: "green"
+
+inputs:
+  commitId:
+    description: 'the id (hash) of the commit'
+    required: true
+  mainBranch:
+    description: 'the main branch of the repo, e.g. "master" or "main"'
+    required: true
+  baseDir:
+    description: 'the directory for the git repo'
+    required: false
+outputs:
+  jiraIssueKeys:
+    description: 'the found Jira issue keys from all commit messages separated by a comma'
+runs:
+  using: 'node16'
+  main: 'index.js'

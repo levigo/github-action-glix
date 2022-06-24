@@ -1,0 +1,28 @@
+{
+  "name": "github-action-glix",
+  "version": "1.0",
+  "description": "This action extracts all Jira issue keys from a certain git commit and its relevant parents",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levigo/github-action-glix.git"
+  },
+  "keywords": [],
+  "author": "levigo solutions gmbh",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/levigo/github-action-glix/issues"
+  },
+  "homepage": "https://github.com/levigo/github-action-glix#readme",
+  "dependencies": {
+    "@actions/core": "^1.9.0",
+    "@actions/github": "^5.0.3",
+    "simple-git": "^3.9.0"
+  },
+  "devDependencies": {
+    "debug": "^4.3.4"
+  }
+}
