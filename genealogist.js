@@ -1,4 +1,5 @@
 const simpleGit = require("simple-git");
+const core = require("@actions/core");
 // const debug = require('debug');
 // debug.enable('simple-git,simple-git:*');
 
@@ -20,26 +21,33 @@ let git;
  */
 async function findRelevantCommits(commitId, mainBranch, baseDir) {
     if (!!baseDir) {
+        core.debug("Using the following baseDir: " + baseDir);
         const options = {
             baseDir: baseDir
         };
         git = simpleGit(options);
     } else {
+        core.debug("Using the default baseDir");
         git = simpleGit();
     }
 
     if (!mainBranch) {
         mainBranch = "master";
     }
+    core.debug("Using the following mainBranch: " + mainBranch);
+    core.debug("Starting search of relevant parents for the following commit: " + commitId);
     const isMerge = await isMergeCommit(commitId);
+    core.debug("Is this a merge commit? " + isMerge);
     let commitMessages;
     if (isMerge) {
         // case: This is a merge commit. If the mainBranch is involved, find all commits that are
         // not on the mainBranch. Else: Use the first parent instead of mainBranch.
         const parentCommits = await getParents(commitId);
+        core.debug("Found parents: " + !!parentCommits ? parentCommits.length : 0);
         commitMessages = getCommitMessages(parentCommits);
     } else { // else: This is not a merge commit
         const isOnMainBranch = await isOnBranch(commitId, mainBranch);
+        core.debug("Is this on the main branch? " + isOnMainBranch);
         if (isOnMainBranch) {
             // case: single commit on main branch --> this is the only relevant commit
             const commitMessage = await getCommitMessage(commitId);
@@ -62,9 +70,12 @@ async function findRelevantCommits(commitId, mainBranch, baseDir) {
  * @returns {Promise<boolean>}
  */
 async function isMergeCommit(commitId) {
-    let info = await git.show(commitId);
-    info = info.split("\n");
-    return info[1].toLowerCase().indexOf("merge:") === 0;
+    try {
+        let info = await git.revparse(commitId+"^2");
+        return !!info;
+    } catch (e) {
+        return false;
+    }
 }
 
 /**
@@ -97,6 +108,7 @@ async function getParents(commitId, baseId) {
         baseId = await getBaseId(commitId);
     }
     if (!!baseId) {
+        core.debug("Searching parents from " + baseId + " to " + commitId);
         const log = await git.log({from: baseId, to: commitId})
         return log.all.slice(1, 51); // omit the first as it is the commitId itself
     } else {
