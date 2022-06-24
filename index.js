@@ -9,9 +9,9 @@ let baseDir, commitId, mainBranch;
         baseDir = core.getInput("baseDir");
 
         const commitMessages = await findRelevantCommits(commitId, mainBranch, baseDir);
-        const jiraIssueKeys = getJiraIssueKeys(commitMessages).join(",");
-        core.info("Found the following issue keys: " + jiraIssueKeys);
-        core.setOutput("issueKeys", jiraIssueKeys);
+        const jiraIssueKeys = getJiraIssueKeys(commitMessages).join(',');
+        core.info("Found the following JIRA issue keys: " + jiraIssueKeys);
+        core.setOutput('issueKeys', jiraIssueKeys);
     } catch (error) {
         core.setFailed(error.message);
     }
