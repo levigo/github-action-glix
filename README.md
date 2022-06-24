@@ -12,33 +12,49 @@ The regex is based on [Atlassian Documentation](https://confluence.atlassian.com
 ## Outputs
 - `issueKeys`: the found Jira issue keys from all commit messages separated by a comma (e.g. `TEST-1,TEST-2`)
 
-## Example usage
+## Usage
+
+Most of you probably use "actions/checkout@v2" (or v3) to checkout the repo in the action run.
+By default that action uses a `fetch-depth` of 1, so only the last commit is fetched. 
+This plugin "walks" the repository so we need more commits. Therefore
+you have to define a higher `fetch-depth` so we have a certain git history.
+A good value for example would be 30. Values higher than 50 don't make sense
+as the plugin caps logs to 50 elements.
+
+### Example usage
 ```yaml
-uses: levigo/github-action-glix@v1.0
-id: glix
-with:
-  commitId: "my-company.atlassian.net"
-  mainBranch: "master"
+- uses: actions/checkout@v3
+  with:
+    fetch-depth: '30'
+- uses: levigo/github-action-glix@v1.0
+  id: glix
+  with:
+    commitId: "my-company.atlassian.net"
+    mainBranch: "master"
 ```
 
-### Usage with "Jira create and set fix version"
+#### Usage with "Jira create and set fix version"
 
 Here is an example on how to extract the `issueKey` from the commit messages and set the same fix version 
 for all those Jira issues.
 
 ```yaml
-      - uses: levigo/github-action-glix@v1.0
-        id: glix
-        with:
-          commitId: ${{ github.sha }}
-          mainBranch: "master"
+  - uses: actions/checkout@v3
+    with:
+      fetch-depth: '30'
 
-      - uses: levigo/github-action-jira-fixversion@v1.0
-        with:
-          domain: "my-company.atlassian.net"
-          username: "technical-user@company.net"
-          password: "fmpUJkGhdKFvoTJclsZ03xw1"
-          versionName: "1.0.5"
-          versionDescription: "Continuous Delivery Version"
-          issueKeys: ${{ steps.glix.outputs.issueKeys }}
+  - uses: levigo/github-action-glix@v1.0
+    id: glix
+    with:
+      commitId: ${{ github.sha }}
+      mainBranch: "master"
+
+  - uses: levigo/github-action-jira-fixversion@v1.0
+    with:
+      domain: "my-company.atlassian.net"
+      username: "technical-user@company.net"
+      password: "fmpUJkGhdKFvoTJclsZ03xw1"
+      versionName: "1.0.5"
+      versionDescription: "Continuous Delivery Version"
+      issueKeys: ${{ steps.glix.outputs.issueKeys }}
 ```
