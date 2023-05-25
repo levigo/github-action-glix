@@ -56,11 +56,10 @@ let baseDir, commitId, mainBranch;
  * </li>
  * </ol>
  */
-const defaultRegex = new RegExp("((?<!([A-Z]{1,10})-?)[A-Z]+-[1-9]\\d*(?![^\\s:.,;!\"/|)}\\]?+&]))");
+const defaultPattern = "((?<!([A-Z]{1,10})-?)[A-Z]+-[1-9]\\d*(?![^\\s:.,;!\"/|)}\\]?+&]))";
 
 /**
- * Uses the Regex to extract a Jira issue key from the given commit messages. If multiple Jira issue keys
- * are part of the commitMessages, only the first occurrence will be considered.
+ * Uses the Regex to extract one or more Jira issue key(s) from the given commit messages.
  *
  * @param commitMessages
  * @returns {*[]}
@@ -69,14 +68,16 @@ function getJiraIssueKeys(commitMessages) {
     const retVal = [];
     for (let i = 0; i < commitMessages.length; i++) {
         let commitMessage = commitMessages[i];
-        if (defaultRegex.test(commitMessage)) {
-            const message = defaultRegex.exec(commitMessage)[0];
-            if (retVal.indexOf(message)<0) {
-                retVal[retVal.length] = message;
-            }
+        const re = new RegExp(defaultPattern, "g"); // re-create due to stateful use
+        while ((match = re.exec(commitMessage)) !== null) {
+            retVal.push(match[0]);
         }
     }
     return retVal;
 }
 
+// just for testing
+module.exports = {
+    getJiraIssueKeys: getJiraIssueKeys
+};
 
