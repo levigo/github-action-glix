@@ -18,5 +18,5 @@ outputs:
   jiraIssueKeys:
     description: 'the found Jira issue keys from all commit messages separated by a comma'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'index.js'
