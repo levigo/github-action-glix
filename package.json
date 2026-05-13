@@ -1,6 +1,6 @@
 {
   "name": "github-action-glix",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "This action extracts all Jira issue keys from a certain git commit and its relevant parents",
   "main": "index.js",
   "scripts": {
