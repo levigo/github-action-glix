@@ -17,17 +17,17 @@
     "url": "https://github.com/levigo/github-action-glix/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "homepage": "https://github.com/levigo/github-action-glix#readme",
   "dependencies": {
-    "@actions/core": "^1.10.0",
-    "@actions/github": "^5.1.1",
-    "simple-git": "^3.9.0"
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^9.1.1",
+    "simple-git": "^3.29.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
-    "debug": "^4.3.4",
-    "jest": "^29.5.0"
+    "@types/node": "^24.12.4",
+    "debug": "^4.4.3",
+    "jest": "^30.4.2"
   }
 }
