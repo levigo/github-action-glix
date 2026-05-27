@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/levigo/github-action-glix#readme",
   "dependencies": {
-    "@actions/core": "^3.0.1",
-    "@actions/github": "^9.1.1",
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^5.1.1",
     "simple-git": "^3.36.0"
   },
   "devDependencies": {
