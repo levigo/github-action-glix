@@ -4,7 +4,7 @@
   "description": "This action extracts all Jira issue keys from a certain git commit and its relevant parents",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "ncc build index.js -o dist --license licenses.txt"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.12.4",
+    "@vercel/ncc": "^0.38.4",
     "debug": "^4.4.3",
     "jest": "^30.4.2"
   }
