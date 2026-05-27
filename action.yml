@@ -19,4 +19,4 @@ outputs:
     description: 'the found Jira issue keys from all commit messages separated by a comma'
 runs:
   using: 'node24'
-  main: 'index.js'
+  main: 'dist/index.js'
